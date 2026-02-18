@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandplan.it - Piano di Frequenze Radioamatoriali</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🎙️ Bandplan.it</h1>
+            <p class="subtitle">Piano di Frequenze Radioamatoriali</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="filters">
+            <div class="filter-group">
+                <label for="frequencyInput">Frequenza (kHz):</label>
+                <input type="number" id="frequencyInput" placeholder="es. 27255 per 27.255 MHz" min="0" max="3000000" step="1">
+            </div>
+            <div class="filter-group">
+                <label for="bandFilter">Banda:</label>
+                <select id="bandFilter">
+                    <option value="">Tutte le bande</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="usageFilter">Tipo di uso:</label>
+                <select id="usageFilter">
+                    <option value="">Tutti i tipi</option>
+                    <option value="radioamatoriale">Radioamatoriale</option>
+                    <option value="libero">Libero</option>
+                    <option value="licenziato">Licenziato</option>
+                    <option value="riservato">Riservato</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="countryFilter">Nazione:</label>
+                <select id="countryFilter">
+                    <option value="">Tutte le nazioni</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <input type="text" id="searchBox" placeholder="Cerca frequenza o assegnazione...">
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card" id="currentFreqCard" style="display: none;">
+                <div class="stat-number" id="currentFreqDisplay">-</div>
+                <div class="stat-label">Frequenza Corrente</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalBands">0</div>
+                <div class="stat-label">Bande Totali</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="amateurBands">0</div>
+                <div class="stat-label">Radioamatoriali</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="freeBands">0</div>
+                <div class="stat-label">Libere</div>
+            </div>
+        </section>
+
+        <section class="band-list" id="bandList">
+            <!-- Le bande verranno caricate dinamicamente qui -->
+        </section>
+
+        <section class="legend">
+            <h3>Legenda</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <span class="badge badge-radioamatoriale">Radioamatoriale</span>
+                    <span>Uso esclusivo per radioamatori con licenza</span>
+                </div>
+                <div class="legend-item">
+                    <span class="badge badge-libero">Libero</span>
+                    <span>Uso senza licenza (ISM, SRD)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="badge badge-licenziato">Licenziato</span>
+                    <span>Richiede licenza specifica</span>
+                </div>
+                <div class="legend-item">
+                    <span class="badge badge-riservato">Riservato</span>
+                    <span>Uso riservato (militare, aviazione, ecc.)</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Bandplan.it - Piano di Frequenze Radioamatoriali</p>
+            <p class="disclaimer">Le informazioni sono fornite a scopo informativo. Verificare sempre le normative locali vigenti.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

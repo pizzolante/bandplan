@@ -1,0 +1,298 @@
+[
+    {
+        "frequency": "1.8 - 2.0 MHz",
+        "band": "160m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "10W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Banda principalmente notturna. Richiede licenza radioamatoriale.",
+        "segments": [
+            {"start": 1800, "end": 1838, "modes": ["CW"]},
+            {"start": 1838, "end": 1840, "modes": ["Digital"]},
+            {"start": 1840, "end": 2000, "modes": ["SSB", "Digital"]}
+        ]
+    },
+    {
+        "frequency": "3.5 - 3.8 MHz",
+        "band": "80m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU"],
+        "notes": "Banda molto popolare per collegamenti nazionali e continentali.",
+        "segments": [
+            {"start": 3500, "end": 3580, "modes": ["CW"]},
+            {"start": 3580, "end": 3600, "modes": ["Digital"]},
+            {"start": 3600, "end": 3800, "modes": ["SSB", "AM"]}
+        ]
+    },
+    {
+        "frequency": "7.0 - 7.2 MHz",
+        "band": "40m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU", "BR", "AR"],
+        "notes": "Ottima banda per DX. Condizioni variabili giorno/notte.",
+        "segments": [
+            {"start": 7000, "end": 7040, "modes": ["CW"]},
+            {"start": 7040, "end": 7050, "modes": ["Digital"]},
+            {"start": 7050, "end": 7200, "modes": ["SSB"]}
+        ]
+    },
+    {
+        "frequency": "14.0 - 14.35 MHz",
+        "band": "20m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU", "BR", "AR", "ZA"],
+        "notes": "La banda DX per eccellenza. Ottima per collegamenti intercontinentali.",
+        "segments": [
+            {"start": 14000, "end": 14070, "modes": ["CW"]},
+            {"start": 14070, "end": 14112, "modes": ["Digital"]},
+            {"start": 14112, "end": 14350, "modes": ["SSB"]}
+        ]
+    },
+    {
+        "frequency": "21.0 - 21.45 MHz",
+        "band": "15m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU"],
+        "notes": "Banda DX dipendente dal ciclo solare. Ottima durante i picchi.",
+        "segments": [
+            {"start": 21000, "end": 21070, "modes": ["CW"]},
+            {"start": 21070, "end": 21149, "modes": ["Digital"]},
+            {"start": 21149, "end": 21450, "modes": ["SSB"]}
+        ]
+    },
+    {
+        "frequency": "28.0 - 29.7 MHz",
+        "band": "10m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM", "FM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU", "BR"],
+        "notes": "Fortemente influenzata dal ciclo solare. Include segmento FM.",
+        "segments": [
+            {"start": 28000, "end": 28070, "modes": ["CW"]},
+            {"start": 28070, "end": 28190, "modes": ["Digital"]},
+            {"start": 28190, "end": 29000, "modes": ["SSB"]},
+            {"start": 29000, "end": 29700, "modes": ["FM", "All Modes"]}
+        ]
+    },
+    {
+        "frequency": "50.0 - 52.0 MHz",
+        "band": "6m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP"],
+        "notes": "Banda VHF magica. Propagazione troposferica e sporadico E.",
+        "segments": [
+            {"start": 50000, "end": 50100, "modes": ["CW"]},
+            {"start": 50100, "end": 50500, "modes": ["SSB", "CW"]},
+            {"start": 50500, "end": 52000, "modes": ["FM", "All Modes"]}
+        ]
+    },
+    {
+        "frequency": "144.0 - 146.0 MHz",
+        "band": "2m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "50W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM", "Satelliti"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU"],
+        "notes": "Banda VHF più popolare. Usata per ripetitori, satelliti e collegamenti locali.",
+        "segments": [
+            {"start": 144000, "end": 144150, "modes": ["CW", "SSB"]},
+            {"start": 144150, "end": 144400, "modes": ["SSB"]},
+            {"start": 144400, "end": 144500, "modes": ["Digital"]},
+            {"start": 144500, "end": 146000, "modes": ["FM", "All Modes"]}
+        ]
+    },
+    {
+        "frequency": "430.0 - 440.0 MHz",
+        "band": "70cm",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "50W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM", "Satelliti", "TV"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "JP", "AU"],
+        "notes": "Banda UHF versatile. Ottima per digital modes e ripetitori.",
+        "segments": [
+            {"start": 430000, "end": 432000, "modes": ["CW", "SSB", "Digital"]},
+            {"start": 432000, "end": 438000, "modes": ["FM", "Digital"]},
+            {"start": 438000, "end": 440000, "modes": ["FM", "All Modes"]}
+        ]
+    },
+    {
+        "frequency": "1240.0 - 1300.0 MHz",
+        "band": "23cm",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "50W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM", "ATV"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Banda microonde per sperimentazione e ATV.",
+        "segments": [
+            {"start": 1240000, "end": 1300000, "modes": ["All Modes"]}
+        ]
+    },
+    {
+        "frequency": "433.05 - 434.79 MHz",
+        "band": "70cm ISM",
+        "assignment": "ISM - Industrial, Scientific, Medical",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "10mW ERP",
+        "modes": ["FM", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Banda ISM per dispositivi a corto raggio (SRD). Nessuna licenza richiesta.",
+        "segments": [
+            {"start": 433050, "end": 434790, "modes": ["All Modes"]}
+        ]
+    },
+    {
+        "frequency": "2400.0 - 2483.5 MHz",
+        "band": "2.4 GHz ISM",
+        "assignment": "ISM - WiFi, Bluetooth",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "100mW EIRP",
+        "modes": ["Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "CN"],
+        "notes": "Banda ISM globale. WiFi, Bluetooth, dispositivi senza fili.",
+        "segments": [
+            {"start": 2400000, "end": 2483500, "modes": ["All Modes"], "note": "WiFi canali 1-14, Bluetooth"}
+        ]
+    },
+    {
+        "frequency": "5150.0 - 5875.0 MHz",
+        "band": "5 GHz ISM",
+        "assignment": "WiFi 5 GHz",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "200mW - 1W EIRP (varia per canale)",
+        "modes": ["Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "WiFi ad alte prestazioni. Alcune sottobande richiedono DFS.",
+        "segments": [
+            {"start": 5150000, "end": 5875000, "modes": ["All Modes"], "note": "WiFi canali 36-165"}
+        ]
+    },
+    {
+        "frequency": "868.0 - 868.6 MHz",
+        "band": "868 MHz SRD",
+        "assignment": "Short Range Devices",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "25mW ERP",
+        "modes": ["Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Banda europea SRD. Domotica, LoRa, sensori.",
+        "segments": [
+            {"start": 868000, "end": 868600, "modes": ["All Modes"]}
+        ]
+    },
+    {
+        "frequency": "26.965 - 27.405 MHz",
+        "band": "CB (11m)",
+        "assignment": "Citizen Band",
+        "usage": "Licenziato",
+        "transmission": true,
+        "power": "4W AM / 12W SSB",
+        "modes": ["AM", "FM", "SSB"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "40 canali CB. Richiede licenza semplificata in alcuni paesi.",
+        "segments": [
+            {"start": 26965, "end": 27405, "modes": ["AM", "FM", "SSB"], "note": "40 canali, CH1-40"}
+        ]
+    },
+    {
+        "frequency": "446.0 - 446.2 MHz",
+        "band": "PMR446",
+        "assignment": "Personal Mobile Radio",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "500mW ERP",
+        "modes": ["FM", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "8-16 canali PMR. Walkie-talkie senza licenza.",
+        "segments": [
+            {"start": 446000, "end": 446200, "modes": ["FM"], "note": "16 canali PMR"}
+        ]
+    },
+    {
+        "frequency": "87.5 - 108.0 MHz",
+        "band": "FM Broadcast",
+        "assignment": "Radiodiffusione FM",
+        "usage": "Riservato",
+        "transmission": false,
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Banda riservata per stazioni radio FM. Solo ricezione per privati.",
+        "segments": [
+            {"start": 87500, "end": 108000, "modes": ["FM"], "note": "Solo ricezione"}
+        ]
+    },
+    {
+        "frequency": "118.0 - 137.0 MHz",
+        "band": "Aeronautica VHF",
+        "assignment": "Comunicazioni aeronautiche",
+        "usage": "Riservato",
+        "transmission": false,
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Comunicazioni pilota-torre di controllo. Solo ricezione per privati.",
+        "segments": [
+            {"start": 118000, "end": 137000, "modes": ["AM"], "note": "Solo ricezione"}
+        ]
+    },
+    {
+        "frequency": "156.0 - 162.0 MHz",
+        "band": "VHF Marina",
+        "assignment": "Comunicazioni marittime",
+        "usage": "Licenziato",
+        "transmission": true,
+        "power": "25W",
+        "modes": ["FM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Canale 16 (156.800 MHz) per emergenze. Richiede licenza marittima.",
+        "segments": [
+            {"start": 156000, "end": 162000, "modes": ["FM"], "note": "CH16: 156.800 MHz emergenze"}
+        ]
+    },
+    {
+        "frequency": "460.0 - 470.0 MHz",
+        "band": "UHF Professionale",
+        "assignment": "Uso professionale PMR",
+        "usage": "Licenziato",
+        "transmission": true,
+        "power": "5W",
+        "modes": ["FM", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Sistemi PMR professionali. Richiede licenza e assegnazione frequenza.",
+        "segments": [
+            {"start": 460000, "end": 470000, "modes": ["FM", "Digital"]}
+        ]
+    }
+]
