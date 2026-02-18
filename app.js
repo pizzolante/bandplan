@@ -3,7 +3,7 @@ let allBands = [];
 let filteredBands = [];
 let currentFrequencyKHz = null;
 
-// Mappa dei codici paese alle bandiere emoji
+// Mappatura dei codici paese alle bandiere emoji
 const countryFlags = {
     'IT': '🇮🇹', 'DE': '🇩🇪', 'FR': '🇫🇷', 'UK': '🇬🇧', 'GB': '🇬🇧',
     'ES': '🇪🇸', 'US': '🇺🇸', 'JP': '🇯🇵', 'AU': '🇦🇺', 'BR': '🇧🇷',
@@ -11,11 +11,16 @@ const countryFlags = {
 };
 
 // Ottieni la bandiera emoji per un codice paese
+// Restituisce il codice paese stesso se la bandiera non è disponibile
 function getCountryFlag(countryCode) {
     return countryFlags[countryCode.toUpperCase()] || countryCode;
 }
 
-// Determina lo stato di trasmissione per una banda
+/**
+ * Determina lo stato di trasmissione per una banda
+ * @param {Object} band - Oggetto banda con informazioni su trasmissione e uso
+ * @returns {Object} Oggetto con: allowed (boolean/'license'/'unknown'), icon (emoji), text (string), class (string), reason (string)
+ */
 function getTransmissionStatus(band) {
     if (!band.transmission) {
         return {
@@ -199,7 +204,7 @@ function updatePageMetadata(freqKHz) {
         metaDesc.name = 'description';
         document.head.appendChild(metaDesc);
     }
-    metaDesc.content = `Informazioni sulla frequenza ${formattedFreq} (${freqMHz} MHz). Posso trasmettere? Scopri se è permesso trasmettere, le licenze richieste e le restrizioni.`;
+    metaDesc.content = `${formattedFreq}: scopri se puoi trasmettere, le licenze richieste e le restrizioni.`;
 }
 
 // Ripristina i metadati della pagina
@@ -431,7 +436,7 @@ function createBandCard(band) {
             ${band.countries && band.countries.length > 0 ? `
             <div class="band-details">
                 <div class="detail-item">
-                    <div class="detail-label">Nazioni</div>
+                    <div class="detail-label">Nazioni${currentFrequencyKHz === null ? ' (uso radioamatoriale)' : ''}</div>
                     <div class="countries">
                         ${band.countries.map(country => `
                             <span class="country-tag">
