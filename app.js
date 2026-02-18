@@ -246,7 +246,7 @@ function displayBands(bands) {
 // Crea una card per la banda
 function createBandCard(band) {
     // Determina i modi da mostrare
-    let modesToShow = band.modes;
+    let modesToShow = band.modes || [];
     let modeNote = '';
     
     // Se c'è una frequenza specifica, mostra solo i modi per quella frequenza
@@ -259,7 +259,7 @@ function createBandCard(band) {
         });
         
         if (segment) {
-            modesToShow = segment.modes;
+            modesToShow = segment.modes || [];
             if (segment.note) {
                 modeNote = ` (${segment.note})`;
             }
@@ -293,10 +293,12 @@ function createBandCard(band) {
                     <div class="detail-value">${band.power}</div>
                 </div>
                 ` : ''}
+                ${modesToShow && modesToShow.length > 0 ? `
                 <div class="detail-item">
                     <div class="detail-label">${currentFrequencyKHz !== null ? 'Modi ammessi su questa frequenza' : 'Modi'}</div>
                     <div class="detail-value modes-display">${modesToShow.join(', ')}${modeNote}</div>
                 </div>
+                ` : ''}
             </div>
             ${band.countries && band.countries.length > 0 ? `
             <div class="band-details">
