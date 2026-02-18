@@ -22,7 +22,7 @@ const cbChannelFrequencies = {
     6: 27.025, 7: 27.035, 8: 27.055, 9: 27.065, 10: 27.075,
     11: 27.085, 12: 27.105, 13: 27.115, 14: 27.125, 15: 27.135,
     16: 27.155, 17: 27.165, 18: 27.175, 19: 27.185, 20: 27.205,
-    21: 27.215, 22: 27.225, 23: 27.255, 24: 27.235, 25: 27.245,
+    21: 27.215, 22: 27.225, 23: 27.235, 24: 27.245, 25: 27.255,
     26: 27.265, 27: 27.275, 28: 27.285, 29: 27.295, 30: 27.305,
     31: 27.315, 32: 27.325, 33: 27.335, 34: 27.345, 35: 27.355,
     36: 27.365, 37: 27.375, 38: 27.385, 39: 27.395, 40: 27.405
@@ -346,8 +346,10 @@ function formatFrequency(freqKHz) {
 
 // Naviga a una frequenza specifica
 function navigateToFrequency(freqKHz) {
+    // Determina il base path per GitHub Pages
+    const basePath = window.location.pathname.includes('/bandplan') ? '/bandplan' : '';
     // Usa path-based routing per migliorare l'indicizzazione
-    const newURL = `/${freqKHz}`;
+    const newURL = `${basePath}/${freqKHz}`;
     window.history.pushState({frequency: freqKHz}, '', newURL);
     currentFrequencyKHz = freqKHz;
     filterByFrequency(freqKHz);
@@ -428,6 +430,17 @@ function displayBands(bands) {
     }
 
     bandList.innerHTML = bands.map(band => createBandCard(band)).join('');
+    
+    // Aggiungi event listeners per i pulsanti di navigazione
+    const navButtons = bandList.querySelectorAll('.nav-button');
+    navButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const freqKHz = parseInt(e.target.dataset.frequency);
+            if (!isNaN(freqKHz)) {
+                navigateToFrequency(freqKHz);
+            }
+        });
+    });
 }
 
 // Crea una card per la banda
@@ -462,10 +475,10 @@ function createBandCard(band) {
     // Genera pulsanti prev/next per navigazione frequenze
     const prevNextButtons = currentFrequencyKHz !== null ? `
         <div class="frequency-navigation">
-            <button class="nav-button prev-button" onclick="navigateToFrequency(${currentFrequencyKHz - 1})">
+            <button class="nav-button prev-button" data-frequency="${currentFrequencyKHz - 1}">
                 ← ${formatFrequency(currentFrequencyKHz - 1)}
             </button>
-            <button class="nav-button next-button" onclick="navigateToFrequency(${currentFrequencyKHz + 1})">
+            <button class="nav-button next-button" data-frequency="${currentFrequencyKHz + 1}">
                 ${formatFrequency(currentFrequencyKHz + 1)} →
             </button>
         </div>
