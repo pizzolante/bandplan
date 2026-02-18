@@ -3,6 +3,75 @@ let allBands = [];
 let filteredBands = [];
 let currentFrequencyKHz = null;
 
+// Mappa dei codici paese alle bandiere emoji
+const countryFlags = {
+    'IT': '🇮🇹', 'DE': '🇩🇪', 'FR': '🇫🇷', 'UK': '🇬🇧', 'GB': '🇬🇧',
+    'ES': '🇪🇸', 'US': '🇺🇸', 'JP': '🇯🇵', 'AU': '🇦🇺', 'BR': '🇧🇷',
+    'AR': '🇦🇷', 'ZA': '🇿🇦', 'CN': '🇨🇳'
+};
+
+// Ottieni la bandiera emoji per un codice paese
+function getCountryFlag(countryCode) {
+    return countryFlags[countryCode.toUpperCase()] || countryCode;
+}
+
+// Determina lo stato di trasmissione per una banda
+function getTransmissionStatus(band) {
+    if (!band.transmission) {
+        return {
+            allowed: false,
+            icon: '🔴',
+            text: 'NO',
+            class: 'forbidden',
+            reason: 'Trasmissione non permessa. Solo ricezione.'
+        };
+    }
+    
+    const usage = band.usage.toLowerCase();
+    
+    if (usage === 'libero') {
+        return {
+            allowed: true,
+            icon: '🟢',
+            text: 'SI',
+            class: 'allowed',
+            reason: 'Trasmissione libera, nessuna licenza richiesta.'
+        };
+    } else if (usage === 'radioamatoriale') {
+        return {
+            allowed: 'license',
+            icon: '🟡',
+            text: 'SI con licenza',
+            class: 'license-required',
+            reason: 'Trasmissione permessa con licenza radioamatoriale valida.'
+        };
+    } else if (usage === 'licenziato') {
+        return {
+            allowed: 'license',
+            icon: '🟡',
+            text: 'SI con licenza',
+            class: 'license-required',
+            reason: band.notes || 'Richiede licenza specifica per la trasmissione.'
+        };
+    } else if (usage === 'riservato') {
+        return {
+            allowed: false,
+            icon: '🔴',
+            text: 'NO',
+            class: 'forbidden',
+            reason: 'Banda riservata ad uso professionale/militare. Solo ricezione per privati.'
+        };
+    }
+    
+    return {
+        allowed: 'unknown',
+        icon: '⚪',
+        text: 'N/D',
+        class: 'unknown',
+        reason: 'Informazioni non disponibili.'
+    };
+}
+
 // Carica i dati al caricamento della pagina
 document.addEventListener('DOMContentLoaded', async () => {
     await loadBandData();
@@ -85,25 +154,60 @@ function setupEventListeners() {
     
     // Gestisce i cambiamenti di URL (back/forward del browser)
     window.addEventListener('popstate', handleURLRouting);
+    window.addEventListener('hashchange', handleURLRouting);
 }
 
 // Gestisce il routing basato su URL
 function handleURLRouting() {
+    // Supporta sia path-based (/27255) che hash-based (#27255) routing
     const path = window.location.pathname;
-    const frequencyMatch = path.match(/\/(\d+)$/);
+    const hash = window.location.hash;
+    
+    let frequencyMatch = path.match(/\/(\d+)$/);
+    if (!frequencyMatch && hash) {
+        frequencyMatch = hash.match(/#(\d+)$/);
+    }
     
     if (frequencyMatch) {
         const freqKHz = parseInt(frequencyMatch[1]);
         if (freqKHz >= 0 && freqKHz <= 3000000) { // 0 Hz a 3 GHz
             currentFrequencyKHz = freqKHz;
             filterByFrequency(freqKHz);
+            updatePageMetadata(freqKHz);
         } else {
             currentFrequencyKHz = null;
             filteredBands = [...allBands];
+            resetPageMetadata();
         }
     } else {
         currentFrequencyKHz = null;
         filteredBands = [...allBands];
+        resetPageMetadata();
+    }
+}
+
+// Aggiorna i metadati della pagina per una frequenza specifica
+function updatePageMetadata(freqKHz) {
+    const formattedFreq = formatFrequency(freqKHz);
+    const freqMHz = (freqKHz / 1000).toFixed(3);
+    document.title = `${formattedFreq} - Posso trasmettere? | Bandplan.it`;
+    
+    // Aggiorna o crea meta description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = 'description';
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = `Informazioni sulla frequenza ${formattedFreq} (${freqMHz} MHz). Posso trasmettere? Scopri se è permesso trasmettere, le licenze richieste e le restrizioni.`;
+}
+
+// Ripristina i metadati della pagina
+function resetPageMetadata() {
+    document.title = 'Bandplan.it - Piano di Frequenze Radioamatoriali';
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+        metaDesc.content = 'Piano di Frequenze Radioamatoriali interattivo per l\'Italia e il mondo. Trova informazioni su bande, frequenze, licenze e possibilità di trasmissione.';
     }
 }
 
@@ -161,8 +265,9 @@ function formatFrequency(freqKHz) {
 
 // Naviga a una frequenza specifica
 function navigateToFrequency(freqKHz) {
-    const newURL = `/${freqKHz}`;
-    window.history.pushState({ frequency: freqKHz }, '', newURL);
+    // Usa hash-based routing per compatibilità con GitHub Pages
+    const newURL = `#${freqKHz}`;
+    window.location.hash = newURL;
     currentFrequencyKHz = freqKHz;
     filterByFrequency(freqKHz);
     updateStats();
@@ -266,8 +371,31 @@ function createBandCard(band) {
         }
     }
     
+    // Ottieni lo stato di trasmissione
+    const transmissionStatus = getTransmissionStatus(band);
+    
+    // Genera HTML per la frequenza specifica
+    const frequencyPageHTML = currentFrequencyKHz !== null ? `
+        <div class="frequency-page-header">
+            <h2>Frequenza ${formatFrequency(currentFrequencyKHz)}</h2>
+            <div class="transmission-status ${transmissionStatus.class}">
+                <div class="status-question">
+                    <h3>Posso trasmettere a ${formatFrequency(currentFrequencyKHz)}?</h3>
+                </div>
+                <div class="status-answer">
+                    <span class="status-icon">${transmissionStatus.icon}</span>
+                    <span class="status-text">${transmissionStatus.text}</span>
+                </div>
+                <div class="status-reason">
+                    ${transmissionStatus.reason}
+                </div>
+            </div>
+        </div>
+    ` : '';
+    
     return `
         <div class="band-card">
+            ${frequencyPageHTML}
             <div class="band-header">
                 <div class="band-frequency">${band.frequency}</div>
                 <span class="badge badge-${band.usage.toLowerCase()}">${band.usage}</span>
@@ -275,7 +403,7 @@ function createBandCard(band) {
             <div class="band-assignment">${band.assignment}</div>
             ${currentFrequencyKHz !== null ? `
             <div class="specific-frequency-info">
-                <strong>Frequenza selezionata:</strong> ${formatFrequency(currentFrequencyKHz)}
+                <strong>Banda:</strong> ${band.band}
             </div>
             ` : ''}
             <div class="band-details">
@@ -303,9 +431,13 @@ function createBandCard(band) {
             ${band.countries && band.countries.length > 0 ? `
             <div class="band-details">
                 <div class="detail-item">
-                    <div class="detail-label">Nazioni (uso radioamatoriale)</div>
+                    <div class="detail-label">Nazioni</div>
                     <div class="countries">
-                        ${band.countries.map(country => `<span class="country-tag">${country}</span>`).join('')}
+                        ${band.countries.map(country => `
+                            <span class="country-tag">
+                                ${getCountryFlag(country)} ${country}
+                            </span>
+                        `).join('')}
                     </div>
                 </div>
             </div>
