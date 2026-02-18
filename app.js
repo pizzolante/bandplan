@@ -470,7 +470,7 @@ function createBandCard(band) {
     const transmissionStatus = getTransmissionStatus(band);
     
     // Calcola il numero di canale se applicabile
-    const channelNumber = currentFrequencyKHz !== null ? getChannelNumber(currentFrequencyKHz, band) : null;
+    const channelInfo = currentFrequencyKHz !== null ? getChannelNumber(currentFrequencyKHz, band) : null;
     
     // Genera pulsanti prev/next per navigazione frequenze
     const prevNextButtons = currentFrequencyKHz !== null ? `
@@ -488,7 +488,7 @@ function createBandCard(band) {
     const frequencyPageHTML = currentFrequencyKHz !== null ? `
         <div class="frequency-page-header">
             <h2>Frequenza ${formatFrequency(currentFrequencyKHz)}</h2>
-            ${channelNumber ? `<div class="channel-info">${channelNumber}</div>` : ''}
+            ${channelInfo ? `<div class="channel-info">${channelInfo}</div>` : ''}
             <div class="transmission-status ${transmissionStatus.class}">
                 <div class="status-question">
                     <h3>Posso trasmettere a ${formatFrequency(currentFrequencyKHz)}?</h3>
