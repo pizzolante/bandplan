@@ -16,6 +16,18 @@ function getCountryFlag(countryCode) {
     return countryFlags[countryCode.toUpperCase()] || countryCode;
 }
 
+// Tabella dei canali CB (CEPT/EU) con frequenze in MHz
+const cbChannelFrequencies = {
+    1: 26.965, 2: 26.975, 3: 26.985, 4: 27.005, 5: 27.015,
+    6: 27.025, 7: 27.035, 8: 27.055, 9: 27.065, 10: 27.075,
+    11: 27.085, 12: 27.105, 13: 27.115, 14: 27.125, 15: 27.135,
+    16: 27.155, 17: 27.165, 18: 27.175, 19: 27.185, 20: 27.205,
+    21: 27.215, 22: 27.225, 23: 27.255, 24: 27.235, 25: 27.245,
+    26: 27.265, 27: 27.275, 28: 27.285, 29: 27.295, 30: 27.305,
+    31: 27.315, 32: 27.325, 33: 27.335, 34: 27.345, 35: 27.355,
+    36: 27.365, 37: 27.375, 38: 27.385, 39: 27.395, 40: 27.405
+};
+
 /**
  * Calcola il numero di canale per frequenze canalizzate (CB, PMR, LPD)
  * @param {number} freqKHz - Frequenza in kHz
@@ -25,14 +37,26 @@ function getCountryFlag(countryCode) {
 function getChannelNumber(freqKHz, band) {
     const freqMHz = freqKHz / 1000;
     
-    // CB (Citizen Band) - 40 canali da 26.965 a 27.405 MHz
+    // CB (Citizen Band) - 40 canali con frequenze specifiche (non lineari)
     if (band.band === 'CB (11m)') {
-        // Canali CB AM/FM: CH1 = 26.965 MHz, spaziatura 10 kHz fino a CH40 = 27.405 MHz
-        const cbStartMHz = 26.965;
-        const cbStepMHz = 0.010; // 10 kHz
-        const channel = Math.round((freqMHz - cbStartMHz) / cbStepMHz) + 1;
-        if (channel >= 1 && channel <= 40) {
-            return `Canale CB ${channel}`;
+        // Cerca il canale corrispondente alla frequenza (con tolleranza di 0.002 MHz)
+        for (let ch = 1; ch <= 40; ch++) {
+            if (Math.abs(freqMHz - cbChannelFrequencies[ch]) < 0.002) {
+                return `Canale CB ${ch}`;
+            }
+        }
+        // Se non c'è corrispondenza esatta, trova il canale più vicino
+        let closestChannel = 1;
+        let minDiff = Math.abs(freqMHz - cbChannelFrequencies[1]);
+        for (let ch = 2; ch <= 40; ch++) {
+            const diff = Math.abs(freqMHz - cbChannelFrequencies[ch]);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestChannel = ch;
+            }
+        }
+        if (minDiff < 0.010) { // Entro 10 kHz
+            return `~Canale CB ${closestChannel}`;
         }
     }
     
