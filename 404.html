@@ -22,11 +22,20 @@
             // Clean the path: remove special characters that could cause loops
             var cleanPath = remainingPath.replace(/[?&]/g, '');
             
-            // Redirect to the clean path
-            l.replace(
-                l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-                basePath + '/' + cleanPath + l.hash
-            );
+            // Validate that the clean path contains only digits (valid frequency)
+            if (cleanPath && /^\d+$/.test(cleanPath)) {
+                // Redirect to the clean path
+                l.replace(
+                    l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                    basePath + '/' + cleanPath + l.hash
+                );
+            } else {
+                // Invalid path - redirect to home
+                l.replace(
+                    l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                    basePath + '/'
+                );
+            }
         } else {
             // Already processed or malformed - redirect to home
             l.replace(
