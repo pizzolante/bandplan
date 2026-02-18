@@ -16,6 +16,75 @@ function getCountryFlag(countryCode) {
     return countryFlags[countryCode.toUpperCase()] || countryCode;
 }
 
+// Tabella dei canali CB (CEPT/EU) con frequenze in MHz
+const cbChannelFrequencies = {
+    1: 26.965, 2: 26.975, 3: 26.985, 4: 27.005, 5: 27.015,
+    6: 27.025, 7: 27.035, 8: 27.055, 9: 27.065, 10: 27.075,
+    11: 27.085, 12: 27.105, 13: 27.115, 14: 27.125, 15: 27.135,
+    16: 27.155, 17: 27.165, 18: 27.175, 19: 27.185, 20: 27.205,
+    21: 27.215, 22: 27.225, 23: 27.235, 24: 27.245, 25: 27.255,
+    26: 27.265, 27: 27.275, 28: 27.285, 29: 27.295, 30: 27.305,
+    31: 27.315, 32: 27.325, 33: 27.335, 34: 27.345, 35: 27.355,
+    36: 27.365, 37: 27.375, 38: 27.385, 39: 27.395, 40: 27.405
+};
+
+/**
+ * Calcola il numero di canale per frequenze canalizzate (CB, PMR, LPD)
+ * @param {number} freqKHz - Frequenza in kHz
+ * @param {Object} band - Oggetto banda
+ * @returns {string|null} - Numero di canale formattato o null
+ */
+function getChannelNumber(freqKHz, band) {
+    const freqMHz = freqKHz / 1000;
+    
+    // CB (Citizen Band) - 40 canali con frequenze specifiche (non lineari)
+    if (band.band === 'CB (11m)') {
+        // Cerca il canale corrispondente alla frequenza (con tolleranza di 0.002 MHz)
+        for (let ch = 1; ch <= 40; ch++) {
+            if (Math.abs(freqMHz - cbChannelFrequencies[ch]) < 0.002) {
+                return `Canale CB ${ch}`;
+            }
+        }
+        // Se non c'è corrispondenza esatta, trova il canale più vicino
+        let closestChannel = 1;
+        let minDiff = Math.abs(freqMHz - cbChannelFrequencies[1]);
+        for (let ch = 2; ch <= 40; ch++) {
+            const diff = Math.abs(freqMHz - cbChannelFrequencies[ch]);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestChannel = ch;
+            }
+        }
+        if (minDiff < 0.010) { // Entro 10 kHz
+            return `~Canale CB ${closestChannel}`;
+        }
+    }
+    
+    // PMR446 - 16 canali da 446.00625 a 446.19375 MHz
+    if (band.band === 'PMR446') {
+        // Canali PMR: CH1 = 446.00625 MHz, spaziatura 12.5 kHz
+        const pmrStartMHz = 446.00625;
+        const pmrStepMHz = 0.0125; // 12.5 kHz
+        const channel = Math.round((freqMHz - pmrStartMHz) / pmrStepMHz) + 1;
+        if (channel >= 1 && channel <= 16) {
+            return `Canale PMR ${channel}`;
+        }
+    }
+    
+    // LPD (Low Power Device) - 69 canali da 433.075 a 434.775 MHz
+    if (band.band === '70cm ISM' && freqMHz >= 433.075 && freqMHz <= 434.775) {
+        // Canali LPD: CH1 = 433.075 MHz, spaziatura 25 kHz
+        const lpdStartMHz = 433.075;
+        const lpdStepMHz = 0.025; // 25 kHz
+        const channel = Math.round((freqMHz - lpdStartMHz) / lpdStepMHz) + 1;
+        if (channel >= 1 && channel <= 69) {
+            return `Canale LPD ${channel}`;
+        }
+    }
+    
+    return null;
+}
+
 /**
  * Determina lo stato di trasmissione per una banda
  * @param {Object} band - Oggetto banda con informazioni su trasmissione e uso
@@ -164,11 +233,18 @@ function setupEventListeners() {
 
 // Gestisce il routing basato su URL
 function handleURLRouting() {
-    // Supporta sia path-based (/27255) che hash-based (#27255) routing
+    // Supporta sia path-based (/27255) che hash-based (#27255) routing per compatibilità
     const path = window.location.pathname;
     const hash = window.location.hash;
     
-    let frequencyMatch = path.match(/\/(\d+)$/);
+    // Rimuovi il base path per GitHub Pages se presente
+    const basePath = '/bandplan';
+    let cleanPath = path;
+    if (path.startsWith(basePath)) {
+        cleanPath = path.substring(basePath.length);
+    }
+    
+    let frequencyMatch = cleanPath.match(/\/(\d+)$/);
     if (!frequencyMatch && hash) {
         frequencyMatch = hash.match(/#(\d+)$/);
     }
@@ -270,13 +346,16 @@ function formatFrequency(freqKHz) {
 
 // Naviga a una frequenza specifica
 function navigateToFrequency(freqKHz) {
-    // Usa hash-based routing per compatibilità con GitHub Pages
-    const newURL = `#${freqKHz}`;
-    window.location.hash = newURL;
+    // Determina il base path per GitHub Pages
+    const basePath = window.location.pathname.includes('/bandplan') ? '/bandplan' : '';
+    // Usa path-based routing per migliorare l'indicizzazione
+    const newURL = `${basePath}/${freqKHz}`;
+    window.history.pushState({frequency: freqKHz}, '', newURL);
     currentFrequencyKHz = freqKHz;
     filterByFrequency(freqKHz);
     updateStats();
     displayBands(filteredBands);
+    updatePageMetadata(freqKHz);
 }
 
 // Applica i filtri
@@ -351,6 +430,17 @@ function displayBands(bands) {
     }
 
     bandList.innerHTML = bands.map(band => createBandCard(band)).join('');
+    
+    // Aggiungi event listeners per i pulsanti di navigazione
+    const navButtons = bandList.querySelectorAll('.nav-button');
+    navButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const freqKHz = parseInt(e.target.dataset.frequency);
+            if (!isNaN(freqKHz)) {
+                navigateToFrequency(freqKHz);
+            }
+        });
+    });
 }
 
 // Crea una card per la banda
@@ -379,10 +469,26 @@ function createBandCard(band) {
     // Ottieni lo stato di trasmissione
     const transmissionStatus = getTransmissionStatus(band);
     
+    // Calcola il numero di canale se applicabile
+    const channelInfo = currentFrequencyKHz !== null ? getChannelNumber(currentFrequencyKHz, band) : null;
+    
+    // Genera pulsanti prev/next per navigazione frequenze
+    const prevNextButtons = currentFrequencyKHz !== null ? `
+        <div class="frequency-navigation">
+            <button class="nav-button prev-button" data-frequency="${currentFrequencyKHz - 1}">
+                ← ${formatFrequency(currentFrequencyKHz - 1)}
+            </button>
+            <button class="nav-button next-button" data-frequency="${currentFrequencyKHz + 1}">
+                ${formatFrequency(currentFrequencyKHz + 1)} →
+            </button>
+        </div>
+    ` : '';
+    
     // Genera HTML per la frequenza specifica
     const frequencyPageHTML = currentFrequencyKHz !== null ? `
         <div class="frequency-page-header">
             <h2>Frequenza ${formatFrequency(currentFrequencyKHz)}</h2>
+            ${channelInfo ? `<div class="channel-info">${channelInfo}</div>` : ''}
             <div class="transmission-status ${transmissionStatus.class}">
                 <div class="status-question">
                     <h3>Posso trasmettere a ${formatFrequency(currentFrequencyKHz)}?</h3>
@@ -395,6 +501,7 @@ function createBandCard(band) {
                     ${transmissionStatus.reason}
                 </div>
             </div>
+            ${prevNextButtons}
         </div>
     ` : '';
     
