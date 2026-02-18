@@ -17,6 +17,10 @@
     <main class="container">
         <section class="filters">
             <div class="filter-group">
+                <label for="frequencyInput">Frequenza (kHz):</label>
+                <input type="number" id="frequencyInput" placeholder="es. 27255 per 27.255 MHz" min="0" max="3000000" step="1">
+            </div>
+            <div class="filter-group">
                 <label for="bandFilter">Banda:</label>
                 <select id="bandFilter">
                     <option value="">Tutte le bande</option>
@@ -44,6 +48,10 @@
         </section>
 
         <section class="stats">
+            <div class="stat-card" id="currentFreqCard" style="display: none;">
+                <div class="stat-number" id="currentFreqDisplay">-</div>
+                <div class="stat-label">Frequenza Corrente</div>
+            </div>
             <div class="stat-card">
                 <div class="stat-number" id="totalBands">0</div>
                 <div class="stat-label">Bande Totali</div>

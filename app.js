@@ -1,13 +1,15 @@
 // Variabili globali
 let allBands = [];
 let filteredBands = [];
+let currentFrequencyKHz = null;
 
 // Carica i dati al caricamento della pagina
 document.addEventListener('DOMContentLoaded', async () => {
     await loadBandData();
     populateFilters();
+    handleURLRouting();
     updateStats();
-    displayBands(allBands);
+    displayBands(filteredBands);
     setupEventListeners();
 });
 
@@ -62,6 +64,109 @@ function setupEventListeners() {
     document.getElementById('usageFilter').addEventListener('change', applyFilters);
     document.getElementById('countryFilter').addEventListener('change', applyFilters);
     document.getElementById('searchBox').addEventListener('input', applyFilters);
+    
+    // Input della frequenza
+    const frequencyInput = document.getElementById('frequencyInput');
+    frequencyInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const freqKHz = parseInt(frequencyInput.value);
+            if (!isNaN(freqKHz) && freqKHz >= 0 && freqKHz <= 3000000) {
+                navigateToFrequency(freqKHz);
+            }
+        }
+    });
+    
+    frequencyInput.addEventListener('blur', () => {
+        const freqKHz = parseInt(frequencyInput.value);
+        if (!isNaN(freqKHz) && freqKHz >= 0 && freqKHz <= 3000000) {
+            navigateToFrequency(freqKHz);
+        }
+    });
+    
+    // Gestisce i cambiamenti di URL (back/forward del browser)
+    window.addEventListener('popstate', handleURLRouting);
+}
+
+// Gestisce il routing basato su URL
+function handleURLRouting() {
+    const path = window.location.pathname;
+    const frequencyMatch = path.match(/\/(\d+)$/);
+    
+    if (frequencyMatch) {
+        const freqKHz = parseInt(frequencyMatch[1]);
+        if (freqKHz >= 0 && freqKHz <= 3000000) { // 0 Hz a 3 GHz
+            currentFrequencyKHz = freqKHz;
+            filterByFrequency(freqKHz);
+        } else {
+            currentFrequencyKHz = null;
+            filteredBands = [...allBands];
+        }
+    } else {
+        currentFrequencyKHz = null;
+        filteredBands = [...allBands];
+    }
+}
+
+// Filtra le bande per una frequenza specifica
+function filterByFrequency(freqKHz) {
+    filteredBands = allBands.filter(band => {
+        const range = parseFrequencyRange(band.frequency);
+        if (range) {
+            const freqMHz = freqKHz / 1000;
+            return freqMHz >= range.min && freqMHz <= range.max;
+        }
+        return false;
+    });
+}
+
+// Parsea un range di frequenze (es. "14.0 - 14.35 MHz")
+function parseFrequencyRange(freqString) {
+    const patterns = [
+        // Pattern per MHz (es. "14.0 - 14.35 MHz")
+        /(\d+\.?\d*)\s*-\s*(\d+\.?\d*)\s*MHz/i,
+        // Pattern per GHz (es. "2.4 - 2.5 GHz")
+        /(\d+\.?\d*)\s*-\s*(\d+\.?\d*)\s*GHz/i
+    ];
+    
+    for (let pattern of patterns) {
+        const match = freqString.match(pattern);
+        if (match) {
+            let min = parseFloat(match[1]);
+            let max = parseFloat(match[2]);
+            
+            // Converti GHz in MHz se necessario
+            if (freqString.toLowerCase().includes('ghz')) {
+                min *= 1000;
+                max *= 1000;
+            }
+            
+            return { min, max };
+        }
+    }
+    return null;
+}
+
+// Formatta una frequenza in kHz in formato leggibile
+function formatFrequency(freqKHz) {
+    if (freqKHz >= 1000000) {
+        const ghz = freqKHz / 1000000;
+        return `${ghz.toFixed(3)} GHz`;
+    } else if (freqKHz >= 1000) {
+        const mhz = freqKHz / 1000;
+        return `${mhz.toFixed(3)} MHz`;
+    } else {
+        return `${freqKHz} kHz`;
+    }
+}
+
+// Naviga a una frequenza specifica
+function navigateToFrequency(freqKHz) {
+    const newURL = `/${freqKHz}`;
+    window.history.pushState({ frequency: freqKHz }, '', newURL);
+    currentFrequencyKHz = freqKHz;
+    filterByFrequency(freqKHz);
+    updateStats();
+    displayBands(filteredBands);
 }
 
 // Applica i filtri
@@ -71,7 +176,19 @@ function applyFilters() {
     const countryFilter = document.getElementById('countryFilter').value.toLowerCase();
     const searchText = document.getElementById('searchBox').value.toLowerCase();
 
-    filteredBands = allBands.filter(band => {
+    // Se c'è una frequenza specifica, parti da quella selezione
+    let bandsToFilter = currentFrequencyKHz !== null 
+        ? allBands.filter(band => {
+            const range = parseFrequencyRange(band.frequency);
+            if (range) {
+                const freqMHz = currentFrequencyKHz / 1000;
+                return freqMHz >= range.min && freqMHz <= range.max;
+            }
+            return false;
+          })
+        : [...allBands];
+
+    filteredBands = bandsToFilter.filter(band => {
         // Filtro banda
         if (bandFilter && band.band.toLowerCase() !== bandFilter) {
             return false;
@@ -181,6 +298,17 @@ function createBandCard(band) {
 
 // Aggiorna le statistiche
 function updateStats() {
+    // Mostra la frequenza corrente se impostata
+    const currentFreqCard = document.getElementById('currentFreqCard');
+    const currentFreqDisplay = document.getElementById('currentFreqDisplay');
+    
+    if (currentFrequencyKHz !== null) {
+        currentFreqCard.style.display = 'block';
+        currentFreqDisplay.textContent = formatFrequency(currentFrequencyKHz);
+    } else {
+        currentFreqCard.style.display = 'none';
+    }
+    
     document.getElementById('totalBands').textContent = filteredBands.length;
     
     const amateurBands = filteredBands.filter(b => 
