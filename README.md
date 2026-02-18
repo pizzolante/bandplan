@@ -44,9 +44,12 @@ python3 -m http.server 8000
 # Poi apri http://localhost:8000
 ```
 
-## 🌐 GitHub Pages
+## 🌐 Sito Web
 
-Il sito è ospitato su GitHub Pages all'indirizzo:
+Il sito è disponibile all'indirizzo:
+https://bandplan.it/
+
+E anche su GitHub Pages:
 https://pizzolante.github.io/bandplan/
 
 ## 📝 Struttura dati

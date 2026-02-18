@@ -3,4 +3,4 @@ Allow: /
 
 # Frequency pages are dynamically generated
 # Allow crawlers to discover them through the sitemap
-Sitemap: https://pizzolante.github.io/bandplan/sitemap.xml
+Sitemap: https://bandplan.it/sitemap.xml

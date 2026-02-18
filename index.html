@@ -7,14 +7,25 @@
     <link rel="stylesheet" href="style.css">
     <!-- Single Page Apps for GitHub Pages redirect handling -->
     <script>
+        // Simplified redirect handling to prevent loops
         (function(l) {
-            if (l.search[1] === '/' ) {
+            // Only process if search starts with /?
+            if (l.search && l.search[1] === '/' ) {
+                // Decode the path from search parameter
                 var decoded = l.search.slice(1).split('&').map(function(s) { 
                     return s.replace(/~and~/g, '&')
                 }).join('?');
-                window.history.replaceState(null, null,
-                    l.pathname.slice(0, -1) + decoded + l.hash
-                );
+                
+                // Only apply if the decoded path is valid (contains only digits for frequency)
+                var pathMatch = decoded.match(/^\/(\d+)$/);
+                if (pathMatch) {
+                    window.history.replaceState(null, null,
+                        l.pathname.slice(0, -1) + decoded + l.hash
+                    );
+                } else {
+                    // Invalid path, redirect to home
+                    window.history.replaceState(null, null, l.pathname.split('?')[0]);
+                }
             }
         }(window.location))
     </script>
@@ -23,7 +34,6 @@
     <header>
         <div class="container">
             <h1>🎙️ Bandplan.it</h1>
-            <p class="subtitle">Piano di Frequenze Radioamatoriali</p>
         </div>
     </header>
 

@@ -36,14 +36,14 @@ body {
 header {
     background: var(--white);
     box-shadow: var(--shadow-lg);
-    padding: 2rem 0;
+    padding: 1rem 0;
     margin-bottom: 2rem;
 }
 
 header h1 {
     color: var(--primary-color);
     font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
 }
 
 .subtitle {

@@ -3,21 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        // Single Page Apps for GitHub Pages
-        // https://github.com/rafgraph/spa-github-pages
-        // This script takes the current url and converts the path and query
-        // string into just a query string, and then redirects the browser
-        // to the new url with only a query string and hash fragment
+        // Single Page Apps for GitHub Pages redirect handling
+        // Simplified to prevent redirect loops with malformed paths
         
-        var pathSegmentsToKeep = 1;
         var l = window.location;
-        l.replace(
-            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-            l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-            l.hash
-        );
+        var path = l.pathname;
+        
+        // Extract the base path for GitHub Pages (e.g., /bandplan)
+        var pathSegmentsToKeep = 1;
+        var basePath = path.split('/').slice(0, 1 + pathSegmentsToKeep).join('/');
+        
+        // Get the remaining path after base path
+        var remainingPath = path.slice(1).split('/').slice(pathSegmentsToKeep).join('/');
+        
+        // Only process if remainingPath doesn't already contain encoded patterns
+        // This prevents redirect loops
+        if (remainingPath && !remainingPath.includes('~and~') && !remainingPath.includes('?/')) {
+            // Clean the path: remove special characters that could cause loops
+            var cleanPath = remainingPath.replace(/[?&]/g, '');
+            
+            // Redirect to the clean path
+            l.replace(
+                l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                basePath + '/' + cleanPath + l.hash
+            );
+        } else {
+            // Already processed or malformed - redirect to home
+            l.replace(
+                l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                basePath + '/'
+            );
+        }
     </script>
 </head>
 <body>
