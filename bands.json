@@ -1,0 +1,218 @@
+[
+    {
+        "frequency": "1.8 - 2.0 MHz",
+        "band": "160m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "10W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Banda principalmente notturna. Richiede licenza radioamatoriale."
+    },
+    {
+        "frequency": "3.5 - 3.8 MHz",
+        "band": "80m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU"],
+        "notes": "Banda molto popolare per collegamenti nazionali e continentali."
+    },
+    {
+        "frequency": "7.0 - 7.2 MHz",
+        "band": "40m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU", "BR", "AR"],
+        "notes": "Ottima banda per DX. Condizioni variabili giorno/notte."
+    },
+    {
+        "frequency": "14.0 - 14.35 MHz",
+        "band": "20m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU", "BR", "AR", "ZA"],
+        "notes": "La banda DX per eccellenza. Ottima per collegamenti intercontinentali."
+    },
+    {
+        "frequency": "21.0 - 21.45 MHz",
+        "band": "15m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU"],
+        "notes": "Banda DX dipendente dal ciclo solare. Ottima durante i picchi."
+    },
+    {
+        "frequency": "28.0 - 29.7 MHz",
+        "band": "10m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "AM", "FM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU", "BR"],
+        "notes": "Fortemente influenzata dal ciclo solare. Include segmento FM."
+    },
+    {
+        "frequency": "50.0 - 52.0 MHz",
+        "band": "6m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "100W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP"],
+        "notes": "Banda VHF magica. Propagazione troposferica e sporadico E."
+    },
+    {
+        "frequency": "144.0 - 146.0 MHz",
+        "band": "2m",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "50W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM", "Satelliti"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "AU"],
+        "notes": "Banda VHF più popolare. Usata per ripetitori, satelliti e collegamenti locali."
+    },
+    {
+        "frequency": "430.0 - 440.0 MHz",
+        "band": "70cm",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "50W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM", "Satelliti", "TV"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "JP", "AU"],
+        "notes": "Banda UHF versatile. Ottima per digital modes e ripetitori."
+    },
+    {
+        "frequency": "1240.0 - 1300.0 MHz",
+        "band": "23cm",
+        "assignment": "Radioamatori",
+        "usage": "Radioamatoriale",
+        "transmission": true,
+        "power": "50W ERP (IT)",
+        "modes": ["CW", "SSB", "Digital", "FM", "ATV"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Banda microonde per sperimentazione e ATV."
+    },
+    {
+        "frequency": "433.05 - 434.79 MHz",
+        "band": "70cm ISM",
+        "assignment": "ISM - Industrial, Scientific, Medical",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "10mW ERP",
+        "modes": ["FM", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Banda ISM per dispositivi a corto raggio (SRD). Nessuna licenza richiesta."
+    },
+    {
+        "frequency": "2400.0 - 2483.5 MHz",
+        "band": "2.4 GHz ISM",
+        "assignment": "ISM - WiFi, Bluetooth",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "100mW EIRP",
+        "modes": ["Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US", "JP", "CN"],
+        "notes": "Banda ISM globale. WiFi, Bluetooth, dispositivi senza fili."
+    },
+    {
+        "frequency": "5150.0 - 5875.0 MHz",
+        "band": "5 GHz ISM",
+        "assignment": "WiFi 5 GHz",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "200mW - 1W EIRP (varia per canale)",
+        "modes": ["Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "WiFi ad alte prestazioni. Alcune sottobande richiedono DFS."
+    },
+    {
+        "frequency": "868.0 - 868.6 MHz",
+        "band": "868 MHz SRD",
+        "assignment": "Short Range Devices",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "25mW ERP",
+        "modes": ["Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Banda europea SRD. Domotica, LoRa, sensori."
+    },
+    {
+        "frequency": "26.965 - 27.405 MHz",
+        "band": "CB (11m)",
+        "assignment": "Citizen Band",
+        "usage": "Licenziato",
+        "transmission": true,
+        "power": "4W AM / 12W SSB",
+        "modes": ["AM", "FM", "SSB"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "40 canali CB. Richiede licenza semplificata in alcuni paesi."
+    },
+    {
+        "frequency": "446.0 - 446.2 MHz",
+        "band": "PMR446",
+        "assignment": "Personal Mobile Radio",
+        "usage": "Libero",
+        "transmission": true,
+        "power": "500mW ERP",
+        "modes": ["FM", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "8-16 canali PMR. Walkie-talkie senza licenza."
+    },
+    {
+        "frequency": "87.5 - 108.0 MHz",
+        "band": "FM Broadcast",
+        "assignment": "Radiodiffusione FM",
+        "usage": "Riservato",
+        "transmission": false,
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Banda riservata per stazioni radio FM. Solo ricezione per privati."
+    },
+    {
+        "frequency": "118.0 - 137.0 MHz",
+        "band": "Aeronautica VHF",
+        "assignment": "Comunicazioni aeronautiche",
+        "usage": "Riservato",
+        "transmission": false,
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Comunicazioni pilota-torre di controllo. Solo ricezione per privati."
+    },
+    {
+        "frequency": "156.0 - 162.0 MHz",
+        "band": "VHF Marina",
+        "assignment": "Comunicazioni marittime",
+        "usage": "Licenziato",
+        "transmission": true,
+        "power": "25W",
+        "modes": ["FM"],
+        "countries": ["IT", "DE", "FR", "UK", "ES", "US"],
+        "notes": "Canale 16 (156.800 MHz) per emergenze. Richiede licenza marittima."
+    },
+    {
+        "frequency": "460.0 - 470.0 MHz",
+        "band": "UHF Professionale",
+        "assignment": "Uso professionale PMR",
+        "usage": "Licenziato",
+        "transmission": true,
+        "power": "5W",
+        "modes": ["FM", "Digital"],
+        "countries": ["IT", "DE", "FR", "UK", "ES"],
+        "notes": "Sistemi PMR professionali. Richiede licenza e assegnazione frequenza."
+    }
+]
