@@ -245,6 +245,27 @@ function displayBands(bands) {
 
 // Crea una card per la banda
 function createBandCard(band) {
+    // Determina i modi da mostrare
+    let modesToShow = band.modes;
+    let modeNote = '';
+    
+    // Se c'è una frequenza specifica, mostra solo i modi per quella frequenza
+    if (currentFrequencyKHz !== null && band.segments) {
+        const freqMHz = currentFrequencyKHz / 1000;
+        const segment = band.segments.find(seg => {
+            const segStartMHz = seg.start / 1000;
+            const segEndMHz = seg.end / 1000;
+            return freqMHz >= segStartMHz && freqMHz <= segEndMHz;
+        });
+        
+        if (segment) {
+            modesToShow = segment.modes;
+            if (segment.note) {
+                modeNote = ` (${segment.note})`;
+            }
+        }
+    }
+    
     return `
         <div class="band-card">
             <div class="band-header">
@@ -252,6 +273,11 @@ function createBandCard(band) {
                 <span class="badge badge-${band.usage.toLowerCase()}">${band.usage}</span>
             </div>
             <div class="band-assignment">${band.assignment}</div>
+            ${currentFrequencyKHz !== null ? `
+            <div class="specific-frequency-info">
+                <strong>Frequenza selezionata:</strong> ${formatFrequency(currentFrequencyKHz)}
+            </div>
+            ` : ''}
             <div class="band-details">
                 <div class="detail-item">
                     <div class="detail-label">Banda</div>
@@ -267,12 +293,10 @@ function createBandCard(band) {
                     <div class="detail-value">${band.power}</div>
                 </div>
                 ` : ''}
-                ${band.modes ? `
                 <div class="detail-item">
-                    <div class="detail-label">Modi</div>
-                    <div class="detail-value">${band.modes.join(', ')}</div>
+                    <div class="detail-label">${currentFrequencyKHz !== null ? 'Modi ammessi su questa frequenza' : 'Modi'}</div>
+                    <div class="detail-value modes-display">${modesToShow.join(', ')}${modeNote}</div>
                 </div>
-                ` : ''}
             </div>
             ${band.countries && band.countries.length > 0 ? `
             <div class="band-details">
