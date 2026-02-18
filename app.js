@@ -204,7 +204,7 @@ function updatePageMetadata(freqKHz) {
         metaDesc.name = 'description';
         document.head.appendChild(metaDesc);
     }
-    metaDesc.content = `${formattedFreq}: scopri se puoi trasmettere, le licenze richieste e le restrizioni.`;
+    metaDesc.content = `${formattedFreq}: scopri se puoi trasmettere in Italia, le licenze richieste e le restrizioni.`;
 }
 
 // Ripristina i metadati della pagina
